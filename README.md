@@ -1,123 +1,69 @@
-# 🪙 Coin Catcher 3D
+# Coin Catcher 3D
 
-![Unity](https://img.shields.io/badge/Unity-6000.6.3f1-000000?style=for-the-badge&logo=unity&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-Scripting-239120?style=for-the-badge&logo=csharp&logoColor=white)
-![Render Pipeline](https://img.shields.io/badge/URP-Universal_Render_Pipeline-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Project-Tugas_Kuliah-FBC437?style=for-the-badge)
+Proyek ini dibuat untuk memenuhi tugas mata kuliah pembuatan *game* menggunakan **Unity Engine**.
 
-**Coin Catcher 3D** adalah gim *arcade* 3D bergaya *low-poly* yang dikembangkan menggunakan **Unity Engine (Universal Render Pipeline)**. Proyek ini dibuat untuk memenuhi **tugas mata kuliah Pembuatan / Pengembangan Gim (*Game Development*)** di perkuliahan.
+**Coin Catcher 3D** adalah *game arcade* sederhana bergaya *low-poly* 3D. Di dalam permainan ini, pemain menggerakkan karakter bernama **Kai** di sebuah arena tertutup untuk menangkap koin yang jatuh dari langit sebanyak mungkin sambil menghindari bom.
 
-Dalam gim ini, pemain mengendalikan karakter utama bernama **Kai** di sebuah arena terbuka untuk mengumpulkan koin sebanyak mungkin sambil menghindari bom yang jatuh dari langit serta memanfaatkan rintangan di sekitar arena.
+## Konsep Permainan
 
----
+Pemain memulai permainan dengan **3 nyawa**. Sepanjang permainan, koin dan bom akan terus jatuh secara acak di dalam area pagar pembatas:
 
-## 🎯 Latar Belakang Proyek Kuliah
+- **Koin**: Memberikan +10 poin setiap kali diambil. Koin yang sudah menyentuh tanah akan bertahan selama 2 detik sebelum menghilang.
+- **Bom**: Mengurangi 1 nyawa jika mengenai pemain atau meledak saat menyentuh pemain. Permainan berakhir (*Game Over*) ketika nyawa habis.
+- **Tingkat Kesulitan**: Kecepatan jatuh objek serta frekuensi kemunculan koin dan bom akan meningkat secara bertahap seiring waktu permainan berjalan.
+- **Rintangan & NPC**: Di dalam arena terdapat sejumlah batu rintangan yang disusun di awal permainan, serta dua karakter NPC (**Maya** dan **Pak Arka**) yang sesekali memunculkan dialog singkat sesuai kondisi permainan (saat mulai, mendapat *streak* koin, terkena bom, atau mencetak rekor baru).
 
-Proyek **Coin Catcher 3D** dirancang sebagai implementasi langsung dari konsep-konsep dasar hingga menengah dalam pengembangan gim 3D menggunakan Unity dan C#, meliputi:
+## Kontrol
 
-1. **Arsitektur *Game State* & *Singleton Pattern*** — Pengelolaan alur permainan (*Main Menu*, *Countdown*, *Playing*, *Pause*, dan *Game Over*) secara terpusat melalui `GameManager3D`.
-2. **Optimasi Performa dengan *Object Pooling*** — Penggunaan kembali objek koin, bom, dan efek ledakan (*particle VFX*) melalui `ObjectPooler3D` tanpa membebani memori akibat *instantiation* dan *garbage collection* berulang.
-3. **Peningkatan Kesulitan Dinamis (*Dynamic Difficulty Scaling*)** — Kecepatan jatuh objek, interval kemunculan (*spawn rate*), dan jumlah maksimum koin maupun bom meningkat secara bertahap seiring waktu permainan berjalan.
-4. **Tata Letak Arena Prosedural (*Procedural Obstacle Generation*)** — Penempatan rintangan batu dan objek lingkungan secara acak berbasis *seed* di empat kuadran arena melalui `ObstacleManager`.
-5. **Interaksi NPC & Umpan Balik Visual (*Game Feel / Juice*)** — Kehadiran karakter pendukung (**Maya** dan **Pak Arka**) dengan balon dialog kontekstual, efek *camera shake* saat terkena ledakan, perubahan *Field of View* (FOV) serta *trail effect* saat melakukan *dash*, hingga animasi objek melayang.
-
----
-
-## ✨ Fitur Utama
-
-- **Mekanika *Dash* dengan *Invulnerability***: Pemain dapat melakukan *dash* cepat untuk mengejar koin atau menembus ledakan bom tanpa kehilangan nyawa, dilengkapi *cooldown* dan indikator antarmuka.
-- **Sistem Kesulitan Progresif**: Semakin lama bertahan, frekuensi dan kecepatan jatuhnya koin serta bom semakin menantang.
-- **Dialog Interaktif NPC**: **Maya** dan **Pak Arka** memberikan semangat, peringatan saat nyawa kritis, serta reaksi ketika pemain mencetak *streak* koin atau memecahkan rekor skor tertinggi (*High Score*).
-- **Rintangan Arena Interaktif**: Batu rintangan di arena memiliki efek goyangan (*wobble*) ketika ditabrak saat *dash* dan menjaga jarak aman dari titik munculnya objek jatuh.
-- **Penyimpanan Skor Tertinggi (*High Score*)**: Rekor skor tertinggi tersimpan secara lokal menggunakan `PlayerPrefs` dan ditampilkan pada menu utama maupun layar akhir permainan.
-- **Dukungan *Input System* Ganda**: Mendukung kendali melalui papan ketik (*Keyboard* WASD / Tombol Panah) maupun kontroler (*Gamepad*).
-
----
-
-## 🎮 Cara Bermain & Kontrol
+Permainan mendukung input *Keyboard* maupun *Gamepad* (menggunakan Unity Input System):
 
 | Aksi | Keyboard | Gamepad |
 | :--- | :--- | :--- |
-| **Bergerak (Atas / Bawah / Kiri / Kanan)** | `W` `A` `S` `D` atau `↑` `↓` `←` `→` | *Left Stick* |
-| **Dash (Menghindar Cepat)** | `Left Shift` / `Right Shift` | *Button South* (`A` / `Cross`) |
-| **Jeda Permainan (*Pause*)** | Tombol *Pause* pada layar | — |
+| Bergerak | `W`, `A`, `S`, `D` atau Tombol Panah | *Left Stick* |
+| *Dash* (Menghindar) | `Left Shift` / `Right Shift` | Tombol `A` / *Cross* (*Button South*) |
 
-### Aturan Permainan
-- 🪙 **Koin (+10 Poin)**: Tangkap koin sebelum menghilang setelah mendarat di tanah. Mengumpulkan beberapa koin berturut-turut akan memicu *coin streak*.
-- 💣 **Bom (-1 Nyawa)**: Hindari bom yang jatuh dari langit. Pemain memulai permainan dengan **3 nyawa**. Gunakan *dash* di saat tepat agar kebal terhadap ledakan bom.
-- 🏆 **Skor Tertinggi**: Bertahanlah selama mungkin dan raih skor tertinggi untuk melampaui rekor sebelumnya!
+> **Catatan**: Saat melakukan *dash*, karakter bergerak lebih cepat dan kebal sementara terhadap ledakan bom, namun terdapat jeda waktu (*cooldown*) selama 1,5 detik sebelum dapat digunakan kembali.
 
----
-
-## 🗂️ Struktur Proyek
+## Struktur Direktori
 
 ```text
-coin-catcher/
-├── Assets/
-│   ├── Audio/                  # Musik latar (BGM) dan efek suara (SFX)
-│   ├── Editor/                 # Skrip utilitas kustom untuk Unity Editor
-│   ├── GeneratedMeshes/        # Mesh hasil ekstraksi model 3D
-│   ├── Materials/              # Material lingkungan, karakter, koin, dan bom
-│   ├── Prefabs/                # Prefab koin, bom, partikel, dan komponen level
-│   ├── Resources/              # Prefab rintangan (Obstacles) yang dimuat dinamis
-│   ├── Scenes/                 # Scene permainan (MainMenu.unity & MainScene.unity)
-│   ├── Scripts/                # Skrip logika permainan berbahasa C#
-│   ├── Settings/               # Konfigurasi Universal Render Pipeline (URP)
-│   ├── Sprites/                # Aset gambar 2D untuk antarmuka pengguna (UI)
-│   └── ThirdParty/             # Aset 3D pihak ketiga (Kenney & Quaternius)
-├── Packages/                   # Daftar dependensi paket Unity (manifest.json)
-└── ProjectSettings/            # Pengaturan konfigurasi proyek Unity
+Assets/
+├── Audio/              # Berkas musik latar (BGM) dan efek suara (SFX)
+├── Editor/             # Skrip bantuan untuk setup di Unity Editor
+├── GeneratedMeshes/    # Mesh hasil ekstraksi model 3D
+├── Materials/          # Material objek, karakter, dan lingkungan
+├── Prefabs/            # Prefab koin, bom, efek partikel, dan properti level
+├── Resources/          # Prefab rintangan (Obstacles) yang dimuat saat runtime
+├── Scenes/             # MainMenu.unity dan MainScene.unity
+├── Scripts/            # Skrip C# logika permainan
+├── Settings/           # Konfigurasi Universal Render Pipeline (URP)
+├── Sprites/            # Aset UI 2D
+└── ThirdParty/         # Aset model 3D dari pihak ketiga
 ```
 
-### Daftar Skrip Utama (`Assets/Scripts/`)
-| Berkas Skrip | Deskripsi Fungsi |
-| :--- | :--- |
-| `GameManager3D.cs` | Mengatur *state* permainan, skor, nyawa, hitung mundur, dan penyimpanan *High Score*. |
-| `Player3DController.cs` | Mengelola pergerakan karakter 3D, gravitasi, batas arena, dan mekanika *dash*. |
-| `PlayerAnimator.cs` | Mengatur animasi prosedural pada tubuh dan anggota gerak karakter pemain. |
-| `ItemSpawner3D.cs` | Mengatur logika kemunculan koin dan bom secara berkala dengan peningkatan kesulitan. |
-| `FallingItem3D.cs` | Menangani perilaku jatuh koin dan bom, deteksi tumbukan, serta pemicu ledakan. |
-| `ObjectPooler3D.cs` | Mengelola *object pool* untuk koin, bom, dan efek partikel ledakan. |
-| `ObstacleManager.cs` | Menghasilkan tata letak rintangan batu di arena secara acak atau berbasis *seed*. |
-| `DialogManager.cs` & `DialogBubble.cs` | Mengelola pemicu dialog dan tampilan balon percakapan NPC Maya dan Pak Arka. |
-| `UIManager3D.cs` & `MainMenuManager.cs` | Mengatur antarmuka menu utama, HUD skor/nyawa, indikator *dash*, dan layar *Game Over*. |
-| `AudioManager.cs` | Mengelola pemutaran musik latar (BGM) dan efek suara (SFX). |
-| `CameraFollow3D.cs` | Mengatur pergerakan kamera mengikuti pemain secara halus beserta efek guncangan (*shake*). |
+### Skrip Utama (`Assets/Scripts/`)
 
----
+- `GameManager3D.cs` — Mengatur alur permainan (*Main Menu*, hitung mundur, *Playing*, *Game Over*), skor, nyawa, dan penyimpanan *High Score* melalui `PlayerPrefs`.
+- `Player3DController.cs` & `PlayerAnimator.cs` — Mengatur pergerakan karakter, batas arena, mekanika *dash*, serta animasi karakter.
+- `ItemSpawner3D.cs` & `FallingItem3D.cs` — Mengatur titik muncul serta kecepatan jatuh koin dan bom.
+- `ObjectPooler3D.cs` — Mengelola *object pooling* untuk koin, bom, dan partikel ledakan agar objek tidak perlu dibuat dan dihapus berulang kali.
+- `ObstacleManager.cs` & `ObstacleVisual.cs` — Mengatur penempatan batu rintangan di arena dan efek goyang saat ditabrak.
+- `DialogManager.cs`, `DialogBubble.cs`, & `NPC3DController.cs` — Mengatur kemunculan balon dialog dan reaksi NPC.
+- `UIManager3D.cs`, `MainMenuManager.cs`, & `GameOverUI.cs` — Mengelola tampilan antarmuka pengguna (HUD, menu utama, jeda, dan layar akhir).
+- `AudioManager.cs` — Mengelola pemutaran musik latar dan efek suara.
+- `CameraFollow3D.cs` — Mengatur kamera agar mengikuti posisi pemain beserta efek guncangan saat terkena bom.
 
-## 🛠️ Teknologi & Kebutuhan Sistem
+## Cara Membuka Proyek
 
-- **Game Engine**: Unity `6000.6.3f1` (Unity 6)
-- **Render Pipeline**: Universal Render Pipeline (URP `17.6.0`)
-- **Sistem Input**: Unity Input System (`1.20.0`)
-- **UI & Tipografi**: Unity uGUI & TextMesh Pro
-
----
-
-## 🚀 Cara Menjalankan Proyek di Unity Editor
-
-1. **Kloning repositori ini**:
+1. Kloning repositori ini:
    ```bash
    git clone https://github.com/ikhsanbskr/coin-catcher.git
-   cd coin-catcher
    ```
-2. **Buka melalui Unity Hub**:
-   - Buka **Unity Hub**, klik tombol **Add** -> **Add project from disk**, lalu pilih folder `coin-catcher`.
-   - Pastikan menggunakan versi editor **Unity 6 (`6000.6.3f1`)** atau versi yang kompatibel.
-3. **Jalankan Permainan**:
-   - Buka *scene* `Assets/Scenes/MainMenu.unity` pada jendela *Project*.
-   - Tekan tombol **Play (▶)** di bagian atas Unity Editor untuk mulai bermain dari menu utama.
+2. Buka **Unity Hub**, pilih **Add -> Add project from disk**, lalu arahkan ke folder repositori ini.
+3. Buka proyek menggunakan **Unity 6 (`6000.6.3f1`)** (Universal Render Pipeline).
+4. Buka *scene* `Assets/Scenes/MainMenu.unity`, lalu tekan tombol **Play** di Unity Editor.
 
----
+## Kredit Aset
 
-## 🙏 Kredit & Atribusi Aset
-
-- **Ultimate Nature Pack** oleh [Quaternius](https://quaternius.com/) (Lisensi CC0)
-- **Starter Kit 3D Platformer** oleh [Kenney](https://kenney.nl/) (Lisensi CC0)
-
----
-
-## 👨‍💻 Pengembang
-
-Dikembangkan oleh **Muhammad Ikhsan Trianda Baskara** ([@ikhsanbskr](https://github.com/ikhsanbskr)) sebagai proyek tugas kuliah pembuatan gim.
+- *Ultimate Nature Pack* oleh Quaternius (CC0)
+- *Starter Kit 3D Platformer* oleh Kenney (CC0)
